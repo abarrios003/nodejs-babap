@@ -3,12 +3,25 @@ var express = require('express'),
     fs      = require('fs'),
     app     = express(),
     eps     = require('ejs'),
+    mongoose = require('mongoose'),                    // mongoose for mongodb     
+    bodyParser = require('body-parser'),   // pull information from HTML POST
     morgan  = require('morgan');
+
+mongoose.connect('mongodb://abarrios:6fovajo9@ds157809.mlab.com:57809/babapdb');
     
 Object.assign=require('object-assign')
 
 app.engine('html', require('ejs').renderFile);
-app.use(morgan('combined'))
+app.use(bodyParser.urlencoded({'extended':'true'}));            // parse application/x-www-form-urlencoded
+app.use(bodyParser.json());                                     // parse application/json
+app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
+app.use(morgan('combined'));
+app.use(function(req, res, next) {
+   res.header("Access-Control-Allow-Origin", "*");
+   res.header('Access-Control-Allow-Methods', 'DELETE, PUT');
+   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+   next();
+});
 
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
     ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
@@ -34,6 +47,16 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
 
   }
 }
+ 
+// Models
+var User = mongoose.model('users', {
+	name: String,
+    username: String,
+    password: String,
+	email: String,
+	country: String,
+	phone: String
+});
 var db = null,
     dbDetails = new Object();
 
@@ -90,6 +113,24 @@ app.get('/pagecount', function (req, res) {
     res.send('{ pageCount: -1 }');
   }
 });
+
+// Get users
+    app.get('/api/users', function(req, res) {
+ 
+        console.log("fetching users");
+ 
+        // use mongoose to get all users in the database
+        User.find(function(err, users) {
+ 
+            // if there is an error retrieving, send the error. nothing after res.send(err) will execute
+            if (err)
+                res.send(err)
+ 
+            res.json(users); // return all reviews in JSON format
+			console.log("Consulta OK");
+			console.log(users);
+        });
+    });
 
 app.get('/babap', function (req, res) {
   // try to initialize the db on every request if it's not already
