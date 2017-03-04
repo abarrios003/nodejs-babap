@@ -132,20 +132,79 @@ app.get('/pagecount', function (req, res) {
         });
     });
 
-app.get('/babap', function (req, res) {
-  // try to initialize the db on every request if it's not already
-  // initialized.
-  if (!db) {
-    initDb(function(err){});
-  }
-  if (db) {
-    db.collection('counts').count(function(err, count ){
-      res.send('{ pageCount: ' + count + '}');
+app.get('/api/username/:username', function(req, res) {
+ 
+        console.log("fetching user ");
+ 
+        // use mongoose to get all users in the database
+        User.find({username : req.params.username},function(err, user) {
+ 
+            // if there is an error retrieving, send the error. nothing after res.send(err) will execute
+            if (err)
+                res.send(err)
+ 
+            res.json(user); // return all reviews in JSON format
+			console.log("Consulta OK");
+			console.log(user);
+        });
     });
-  } else {
-    res.send('{ pageCount: +1 }');
-  }
-});
+	
+    app.post('/api/login', function(req, res) {
+ 
+        console.log("login user ");
+ 
+        // use mongoose to get all users in the database
+        User.find({email : req.body.email, password: req.body.password},function(err, user) {
+ 
+            // if there is an error retrieving, send the error. nothing after res.send(err) will execute
+            if (err)
+                res.send(err)
+ 
+            res.json(user); // return all reviews in JSON format
+			console.log("Consulta OK");
+			console.log(user);
+        });
+    });
+	
+ 
+    // create review and send back all reviews after creation
+    app.post('/api/users', function(req, res) {
+ 
+        console.log("creating users");
+		console.log(req);
+ 
+        // create a user, information comes from request from Ionic
+        User.create({
+			name : req.body.name,
+            username : req.body.username,
+            password : req.body.password,
+            email: req.body.email,
+			country : req.body.country,
+            phone : req.body.phone,
+            done : false
+        }, function(err, user) {
+            if (err)
+                res.send(err);
+ 
+            // get and return all the users after you create another
+            User.find(function(err, users) {
+                if (err)
+                    res.send(err)
+                res.json(users);
+            });
+        });
+ 
+    });
+ 
+    // delete a user
+    app.delete('/api/users/:user_id', function(req, res) {
+        User.remove({
+            _id : req.params.user_id
+        }, function(err, user) {
+ 
+        });
+    });
+
 
 // error handling
 app.use(function(err, req, res, next){
