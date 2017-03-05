@@ -8,7 +8,7 @@ var express = require('express'),
     bodyParser = require('body-parser'),   // pull information from HTML POST
     morgan  = require('morgan');
 
-var server  = emailjs.server.connect({
+var mailServer  = emailjs.server.connect({
    user:    "alex.barrios.ureta", 
    password:"6Fovajo9", 
    host:    "smtp.gmail.com", 
@@ -171,7 +171,7 @@ app.get('/api/username/:username', function(req, res) {
             res.json(user); // return all reviews in JSON format
 			console.log("Consulta OK");
 			console.log(user);
-	  server.send({
+	  mailServer.send({
 			   text:    "Thanks for joining BaBap", 
 			   from:    "BaBap <alex.barrios.ureta@gmail.com>", 
 			   to:      "<"+req.body.email+">",
