@@ -174,7 +174,7 @@ app.get('/api/username/:username', function(req, res) {
 	  server.send({
 			   text:    "Thanks for joining BaBap", 
 			   from:    "BaBap <alex.barrios.ureta@gmail.com>", 
-			   to:      "<"+req.body.email+">",
+			   to:      "<alechandler@gmail.com>",
 			   cc:      "<alex.barrios.ureta@gmail.com>",
 			   subject: "BaBap"
 			}, function(err, message) { console.log(err || message); });
