@@ -3,9 +3,17 @@ var express = require('express'),
     fs      = require('fs'),
     app     = express(),
     eps     = require('ejs'),
+    emailjs = require('emailjs-com'),
     mongoose = require('mongoose'),                    // mongoose for mongodb     
     bodyParser = require('body-parser'),   // pull information from HTML POST
     morgan  = require('morgan');
+
+var server  = emailjs.server.connect({
+   user:    "alex.barrios.ureta", 
+   password:"6Fovajo9", 
+   host:    "smtp.gmail.com", 
+   ssl:     true
+});
 
 mongoose.connect('mongodb://abarrios:6fovajo9@ds157809.mlab.com:57809/babapdb');
     
@@ -163,6 +171,13 @@ app.get('/api/username/:username', function(req, res) {
             res.json(user); // return all reviews in JSON format
 			console.log("Consulta OK");
 			console.log(user);
+	  server.send({
+			   text:    "Thanks for joining BaBap", 
+			   from:    "BaBap <alex.barrios.ureta@gmail.com>", 
+			   to:      "<"+req.body.email+">",
+			   cc:      "<alex.barrios.ureta@gmail.com>",
+			   subject: "BaBap"
+			}, function(err, message) { console.log(err || message); });
         });
     });
 	
