@@ -171,13 +171,6 @@ app.get('/api/username/:username', function(req, res) {
             res.json(user); // return all reviews in JSON format
 			console.log("Consulta OK");
 			console.log(user);
-	  mailServer.send({
-			   text:    "Thanks for joining BaBap", 
-			   from:    "BaBap <alex.barrios.ureta@gmail.com>", 
-			   to:      "<"+req.body.email+">",
-			   cc:      "<alex.barrios.ureta@gmail.com>",
-			   subject: "BaBap"
-			}, function(err, message) { console.log(err || message); });
         });
     });
 	
@@ -186,21 +179,28 @@ app.get('/api/username/:username', function(req, res) {
     app.post('/api/users', function(req, res) {
  
         console.log("creating users");
-		console.log(req);
  
         // create a user, information comes from request from Ionic
         User.create({
-			name : req.body.name,
+	    name : req.body.name,
             username : req.body.username,
             password : req.body.password,
             email: req.body.email,
-			country : req.body.country,
+	    country : req.body.country,
             phone : req.body.phone,
             done : false
         }, function(err, user) {
             if (err)
                 res.send(err);
  
+	   mailServer.send({
+			   text:    "Thanks for joining BaBap "+req.body.name, 
+			   from:    "BaBap <alex.barrios.ureta@gmail.com>", 
+			   to:      "<"+req.body.email+">",
+			   cc:      "<alex.barrios.ureta@gmail.com>",
+			   subject: "BaBap"
+			}, function(err, message) { console.log(err || message); });
+		
             // get and return all the users after you create another
             User.find(function(err, users) {
                 if (err)
