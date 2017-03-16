@@ -93,6 +93,11 @@ var initDb = function(callback) {
   });
 };
 
+var apiRoutes = express.Router();
+
+// connect the api routes under /api/*
+app.use('/api', apiRoutes);
+
 app.get('/', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
@@ -150,6 +155,23 @@ app.get('/api/username/:username', function(req, res) {
  
         // use mongoose to get all users in the database
         User.find({username : req.params.username},function(err, user) {
+ 
+            // if there is an error retrieving, send the error. nothing after res.send(err) will execute
+            if (err)
+                res.send(err)
+ 
+            res.json(user); // return all reviews in JSON format
+			console.log("Consulta OK");
+			console.log(user);
+        });
+    });
+
+   app.get('/api/email/:email', function(req, res) {
+ 
+        console.log("fetching user ");
+ 
+        // use mongoose to get all users in the database
+        User.find({email : req.params.email},function(err, user) {
  
             // if there is an error retrieving, send the error. nothing after res.send(err) will execute
             if (err)
