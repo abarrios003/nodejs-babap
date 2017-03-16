@@ -55,16 +55,19 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
 
   }
 }
- 
-// Models
-var User = mongoose.model('users', {
+//Schema
+var userSchema = new Schema({
+  	created: Date,
 	name: String,
-    username: String,
+	username: String,
     password: String,
 	email: String,
 	country: String,
 	phone: String
 });
+ 
+// Models
+var User = mongoose.model('User', userSchema});
 var db = null,
     dbDetails = new Object();
 
@@ -182,6 +185,7 @@ app.get('/api/username/:username', function(req, res) {
  
         // create a user, information comes from request from Ionic
         User.create({
+	    created: req.body.created,
 	    name : req.body.name,
             username : req.body.username,
             password : req.body.password,
