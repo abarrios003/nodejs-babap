@@ -6,7 +6,8 @@ var express = require('express'),
     emailjs = require('emailjs'),
     mongoose = require('mongoose'),                    // mongoose for mongodb     
     bodyParser = require('body-parser'),   // pull information from HTML POST
-    morgan  = require('morgan');
+    morgan  = require('morgan'),
+    moment = require('moment'); 
 
 var mailServer  = emailjs.server.connect({
    user:    "alex.barrios.ureta", 
@@ -59,14 +60,11 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
 var userSchema = new Schema({
 	name: String,
 	username: String,
-    password: String,
+    	password: String,
 	email: String,
 	country: String,
 	phone: String,
-	created: { 
-	   type: Date,
-    	   default: Date.now
-	}
+	timestamps
 });
  
 // Models
@@ -188,7 +186,6 @@ app.get('/api/username/:username', function(req, res) {
  
         // create a user, information comes from request from Ionic
         User.create({
-	    created: req.body.created,
 	    name : req.body.name,
             username : req.body.username,
             password : req.body.password,
