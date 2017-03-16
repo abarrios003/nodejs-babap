@@ -57,13 +57,16 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
 }
 //Schema
 var userSchema = new Schema({
-  	created: Date,
 	name: String,
 	username: String,
     password: String,
 	email: String,
 	country: String,
-	phone: String
+	phone: String,
+	created: { 
+	   type: Date,
+    	   default: Date.now
+	}
 });
  
 // Models
