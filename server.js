@@ -63,8 +63,9 @@ var userSchema = new Schema({
     	password: String,
 	email: String,
 	country: String,
-	phone: String,
-	timestamps
+	phone: String
+},{
+	timestamps: true
 });
  
 // Models
