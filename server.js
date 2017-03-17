@@ -61,11 +61,11 @@ var userSchema = new Schema({
 	name: String,
 	username: String,
     	password: String,
-	email: String,
+	email: { type: String, required: true, unique: true },
 	country: String,
-	phone: String
-},{
-	timestamps: true
+	phone: String,
+	created_at: Date,
+  	updated_at: Date
 });
  
 // Models
@@ -247,6 +247,21 @@ app.get('/api/username/:username', function(req, res) {
         });
     });
 
+// on every save, add the date
+userSchema.pre('save', function(next) {
+  // get the current date
+  var currentDate = new Date();
+  
+  // change the updated_at field to current date
+  this.updated_at = currentDate;
+
+  // if created_at doesn't exist, add to that field
+  if (!this.created_at)
+    this.created_at = currentDate;
+
+  next();
+});
+
 
 // error handling
 app.use(function(err, req, res, next){
@@ -261,4 +276,5 @@ initDb(function(err){
 app.listen(port, ip);
 console.log('Server running on http://%s:%s', ip, port);
 
+module.exports = User;
 module.exports = app ;
