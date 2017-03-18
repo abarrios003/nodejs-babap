@@ -61,7 +61,7 @@ var userSchema = new Schema({
 	name: String,
 	username: String,
     	password: String,
-	email: { type: String, required: true},
+	email: { type: String, required: true, unique : true},
 	country: String,
 	phone: String,
 	created_at: Date,
@@ -208,7 +208,7 @@ app.get('/api/username/:username', function(req, res) {
         console.log("creating users");
 	    
 	    var obj = req.body;
-	    collection.findOneAndUpdate({_id: obj._id}, obj, {upsert: true, new: true}, function(err, user) {
+	    collection.findOneAndUpdate({"email": obj.email}, obj, {upsert: true, new: true}, function(err, user) {
             if (err)
                 res.send(err);
 			    
