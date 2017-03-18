@@ -206,9 +206,34 @@ app.get('/api/username/:username', function(req, res) {
     app.post('/api/users', function(req, res) {
  
         console.log("creating users");
+	    
+	    var obj = req.body;
+		var id = obj._id;
+		delete obj._id;
+		if (id) {
+		    User.update({_id: id}, obj, {upsert: true}, function(err, user) {
+            if (err)
+                res.send(err);
+			    
+	mailServer.send({
+			   text:    "Thanks for joining BaBap "+req.body.name, 
+			   from:    "BaBap <alex.barrios.ureta@gmail.com>", 
+			   to:      "<"+req.body.email+">",
+			   cc:      "<alex.barrios.ureta@gmail.com>",
+			   subject: "BaBap"
+			}, function(err, message) { console.log(err || message); });
+		
+            // get and return all the users after you create another
+            User.find(function(err, users) {
+                if (err)
+                    res.send(err)
+                res.json(users);
+            });
+        });
+		
  
         // create a user, information comes from request from Ionic
-        User.create({
+        /*User.create({
 	    name : req.body.name,
             username : req.body.username,
             password : req.body.password,
@@ -234,9 +259,10 @@ app.get('/api/username/:username', function(req, res) {
                     res.send(err)
                 res.json(users);
             });
-        });
+        });*/
  
-    });
+    }
+});
  
     // delete a user
     app.delete('/api/users/:user_id', function(req, res) {
