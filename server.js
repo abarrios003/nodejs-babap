@@ -208,10 +208,7 @@ app.get('/api/username/:username', function(req, res) {
         console.log("creating users");
 	    
 	    var obj = req.body;
-		var id = obj._id;
-		delete obj._id;
-		if (id) {
-		    User.update({_id: id}, obj, {upsert: true}, function(err, user) {
+	    collection.findOneAndUpdate({_id: obj._id}, obj, {upsert: true}, function(err, user) {
             if (err)
                 res.send(err);
 			    
