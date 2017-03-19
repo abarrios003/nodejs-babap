@@ -201,17 +201,17 @@ app.get('/api/username/:username', function(req, res) {
         });
     });
 
-   app.put('/api/update', function(req, res){
+   app.post('/api/update', function(req, res){
 	   var obj = req.body;
 	   console.log('update');
 	   console.log(obj.id);
 	   User.remove({
             _id : obj.id
         }, function(err, user) {
- 		if(err) {
+ 		if(err)
  			res.send(err)
-		}
- 			User.create({
+
+ 		User.create({
 	    	name : req.body.name,
             username : req.body.username,
             password : req.body.password,
@@ -220,9 +220,8 @@ app.get('/api/username/:username', function(req, res) {
             phone : req.body.phone,
             done : false
         }, function(err, user) {
-            if (err){
+            if (err)
                 res.send(err);
-            }
             res.send(user);
         });
  
