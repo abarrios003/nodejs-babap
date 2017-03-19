@@ -235,65 +235,30 @@ app.get('/api/username/:username', function(req, res) {
     app.post('/api/users', function(req, res) {
  
         console.log("creating users");
-	    
-	    var obj = req.body;
-	    /*User.findOneAndUpdate({"email": obj.email}, obj, {upsert: true, new: true}, function(err, user) {
-            if (err)
-                res.send(err);*/
-	    /*User.findByIdAndUpdate(req.body.id, {
-		$push: {"name": req.body.name}
-	    }, {
-		safe: true,
-		new: true
-	    }, function(err, user){
-		if(err){
-		    res.send(err);
-		} else {
-		    res.json(user);
-		}
-	    });*/
-			    
-	/*mailServer.send({
-			   text:    "Thanks for joining BaBap "+req.body.name, 
-			   from:    "BaBap <alex.barrios.ureta@gmail.com>", 
-			   to:      "<"+req.body.email+">",
-			   cc:      "<alex.barrios.ureta@gmail.com>",
-			   subject: "BaBap"
-			}, function(err, message) { console.log(err || message); });
-		
-            // get and return all the users after you create another
-            User.find(function(err, users) {
-                if (err)
-                    res.send(err)
-                res.json(users);
-            });*/
-		
+		console.log(req);
  
         // create a user, information comes from request from Ionic
         User.create({
-	    name : req.body.name,
+			name : req.body.name,
             username : req.body.username,
             password : req.body.password,
             email: req.body.email,
-	    country : req.body.country,
+			country : req.body.country,
             phone : req.body.phone,
             done : false
         }, function(err, user) {
             if (err)
                 res.send(err);
- 	    res.send(user);
-	  /* mailServer.send({
-			   text:    "Thanks for joining BaBap "+req.body.name, 
-			   from:    "BaBap <alex.barrios.ureta@gmail.com>", 
-			   to:      "<"+req.body.email+">",
-			   cc:      "<alex.barrios.ureta@gmail.com>",
-			   subject: "BaBap"
-			}, function(err, message) { console.log(err || message); });*/
-		
+ 
             // get and return all the users after you create another
+            User.find(function(err, users) {
+                if (err)
+                    res.send(err)
+                res.json(users);
+            });
         });
-
-});
+ 
+    });
  
     // delete a user
     app.delete('/api/users/:user_id', function(req, res) {
