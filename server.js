@@ -208,11 +208,23 @@ app.get('/api/username/:username', function(req, res) {
         console.log("creating users");
 	    
 	    var obj = req.body;
-	    User.findOneAndUpdate({"email": obj.email}, obj, {upsert: true, new: true}, function(err, user) {
+	    /*User.findOneAndUpdate({"email": obj.email}, obj, {upsert: true, new: true}, function(err, user) {
             if (err)
-                res.send(err);
+                res.send(err);*/
+	    User.findByIdAndUpdate(req.body._id, {
+		$push: {"name": req.body.name}
+	    }, {
+		safe: true,
+		new: true
+	    }, function(err, user){
+		if(err){
+		    res.send(err);
+		} else {
+		    res.json(user);
+		}
+	    });
 			    
-	mailServer.send({
+	/*mailServer.send({
 			   text:    "Thanks for joining BaBap "+req.body.name, 
 			   from:    "BaBap <alex.barrios.ureta@gmail.com>", 
 			   to:      "<"+req.body.email+">",
@@ -225,7 +237,7 @@ app.get('/api/username/:username', function(req, res) {
                 if (err)
                     res.send(err)
                 res.json(users);
-            });
+            });*/
         });
 		
  
