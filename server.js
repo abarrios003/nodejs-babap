@@ -69,7 +69,7 @@ var userSchema = new Schema({
 });
  
 // Models
-var User = mongoose.model('User', userSchema});
+var User = mongoose.model('User', userSchema);
 var db = null,
     dbDetails = new Object();
 
