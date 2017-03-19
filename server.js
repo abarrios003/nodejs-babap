@@ -211,7 +211,7 @@ app.get('/api/username/:username', function(req, res) {
 	    /*User.findOneAndUpdate({"email": obj.email}, obj, {upsert: true, new: true}, function(err, user) {
             if (err)
                 res.send(err);*/
-	    User.findByIdAndUpdate(req.body._id, {
+	    User.findByIdAndUpdate(req.body.id, {
 		$push: {"name": req.body.name}
 	    }, {
 		safe: true,
