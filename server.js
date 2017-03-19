@@ -201,7 +201,7 @@ app.get('/api/username/:username', function(req, res) {
         });
     });
 
-   app.post('/api/users/update', function(req, res){
+   app.post('/api/update', function(req, res){
 	   var obj = req.body;
 	   console.log('update');
 	   console.log(obj.id);
