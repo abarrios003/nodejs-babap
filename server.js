@@ -200,6 +200,35 @@ app.get('/api/username/:username', function(req, res) {
 			console.log(user);
         });
     });
+
+   app.post('/api/users/update', function(req, res){
+	   var obj = req.body;
+	   console.log('update');
+	   console.log(obj.id);
+	   User.remove({
+            _id : obj.id
+        }, function(err, user) {
+ 		if(err) {
+ 			res.send(err)
+		}
+ 			User.create({
+	    	name : req.body.name,
+            username : req.body.username,
+            password : req.body.password,
+            email: req.body.email,
+	    	country : req.body.country,
+            phone : req.body.phone,
+            done : false
+        }, function(err, user) {
+            if (err){
+                res.send(err);
+            }
+            res.send(user);
+        });
+ 
+    });
+
+   });
 	
  
     // create review and send back all reviews after creation
@@ -211,7 +240,7 @@ app.get('/api/username/:username', function(req, res) {
 	    /*User.findOneAndUpdate({"email": obj.email}, obj, {upsert: true, new: true}, function(err, user) {
             if (err)
                 res.send(err);*/
-	    User.findByIdAndUpdate(req.body.id, {
+	    /*User.findByIdAndUpdate(req.body.id, {
 		$push: {"name": req.body.name}
 	    }, {
 		safe: true,
@@ -222,7 +251,7 @@ app.get('/api/username/:username', function(req, res) {
 		} else {
 		    res.json(user);
 		}
-	    });
+	    });*/
 			    
 	/*mailServer.send({
 			   text:    "Thanks for joining BaBap "+req.body.name, 
@@ -238,11 +267,10 @@ app.get('/api/username/:username', function(req, res) {
                     res.send(err)
                 res.json(users);
             });*/
-        });
 		
  
         // create a user, information comes from request from Ionic
-        /*User.create({
+        User.create({
 	    name : req.body.name,
             username : req.body.username,
             password : req.body.password,
@@ -254,13 +282,13 @@ app.get('/api/username/:username', function(req, res) {
             if (err)
                 res.send(err);
  
-	   mailServer.send({
+	  /* mailServer.send({
 			   text:    "Thanks for joining BaBap "+req.body.name, 
 			   from:    "BaBap <alex.barrios.ureta@gmail.com>", 
 			   to:      "<"+req.body.email+">",
 			   cc:      "<alex.barrios.ureta@gmail.com>",
 			   subject: "BaBap"
-			}, function(err, message) { console.log(err || message); });
+			}, function(err, message) { console.log(err || message); });*/
 		
             // get and return all the users after you create another
             User.find(function(err, users) {
@@ -268,7 +296,7 @@ app.get('/api/username/:username', function(req, res) {
                     res.send(err)
                 res.json(users);
             });
-        });*/
+        });
  
     }
 });
