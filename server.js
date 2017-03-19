@@ -297,8 +297,7 @@ app.get('/api/username/:username', function(req, res) {
                 res.json(users);
             });
         });
- 
-    }
+
 });
  
     // delete a user
