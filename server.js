@@ -281,7 +281,7 @@ app.get('/api/username/:username', function(req, res) {
         }, function(err, user) {
             if (err)
                 res.send(err);
- 
+ 	    res.send(user);
 	  /* mailServer.send({
 			   text:    "Thanks for joining BaBap "+req.body.name, 
 			   from:    "BaBap <alex.barrios.ureta@gmail.com>", 
@@ -291,11 +291,6 @@ app.get('/api/username/:username', function(req, res) {
 			}, function(err, message) { console.log(err || message); });*/
 		
             // get and return all the users after you create another
-            User.find(function(err, users) {
-                if (err)
-                    res.send(err)
-                res.json(users);
-            });
         });
 
 });
