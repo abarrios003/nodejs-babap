@@ -208,7 +208,7 @@ app.get('/api/username/:username', function(req, res) {
         console.log("creating users");
 	    
 	    var obj = req.body;
-	    collection.findOneAndUpdate({"email": obj.email}, obj, {upsert: true, new: true}, function(err, user) {
+	    User.findOneAndUpdate({"email": obj.email}, obj, {upsert: true, new: true}, function(err, user) {
             if (err)
                 res.send(err);
 			    
