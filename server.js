@@ -57,6 +57,7 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
   }
 }
 //Schema
+var Schema = mongoose.Schema;
 var userSchema = new Schema({
 	name: String,
 	username: String,
