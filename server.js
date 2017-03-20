@@ -56,23 +56,6 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
 
   }
 }
-//Schema
-var Schema = mongoose.Schema;
-var userSchema = new Schema({
-	name: String,
-	username: String,
-    	password: String,
-	email: { type: String, required: true, unique : true},
-	country: String,
-	phone: String,
-	created_at: { type: Date, default: Date.now },
-  	updated_at: { type: Date, default: Date.now }
-});
- 
-// Models
-var User = mongoose.model('User', userSchema);
-var db = null,
-    dbDetails = new Object();
 
 var initDb = function(callback) {
   if (mongoURL == null) return;
@@ -94,6 +77,24 @@ var initDb = function(callback) {
     console.log('Connected to MongoDB at: %s', mongoURL);
   });
 };
+
+//Schema
+var Schema = mongoose.Schema;
+var userSchema = new Schema({
+	name: String,
+	username: String,
+    	password: String,
+	email: { type: String, required: true, unique : true},
+	country: String,
+	phone: String,
+	created_at: { type: Date, default: Date.now },
+  	updated_at: { type: Date, default: Date.now }
+});
+ 
+// Models
+var User = mongoose.model('User', userSchema);
+var db = null,
+    dbDetails = new Object();
 
 var apiRoutes = express.Router();
 
@@ -298,5 +299,4 @@ initDb(function(err){
 app.listen(port, ip);
 console.log('Server running on http://%s:%s', ip, port);
 
-module.exports = User;
 module.exports = app ;
