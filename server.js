@@ -297,7 +297,7 @@ initDb(function(err){
 });
 
 app.listen(port, ip, function(){
-  console.log("BaBap Listening on " + server_ip_address + ", server_port " + server_port)
+  console.log("BaBap Listening on " + ip + ", server_port " + port)
 });
 
 /*app.listen(port, ip);
