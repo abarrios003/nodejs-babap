@@ -65,8 +65,8 @@ var userSchema = new Schema({
 	email: { type: String, required: true, unique : true},
 	country: String,
 	phone: String,
-	created_at: Date,
-  	updated_at: Date
+	created_at: { type: Date, default: Date.now },
+  	updated_at: { type: Date, default: Date.now }
 });
  
 // Models
